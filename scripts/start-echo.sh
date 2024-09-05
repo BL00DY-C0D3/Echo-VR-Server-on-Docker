@@ -18,5 +18,12 @@ mkdir -p /ready-at-dawn-echo-arena/logs/$HOSTNAME/old 2> /dev/null
 #move old log files
 mv /ready-at-dawn-echo-arena/logs/$HOSTNAME/*.log /ready-at-dawn-echo-arena/logs/$HOSTNAME/old
 
+
+if ! [[ $(pgrep -f cleanupLogs.sh ) ]]
+then
+    bash /scripts/cleanupLogs.sh    
+fi
+
+
 #start the echo server process
 nohup /usr/bin/wine /ready-at-dawn-echo-arena/bin/win10/echovr.exe $flags &
