@@ -48,7 +48,7 @@ function moveOldLogs {
 		do
 			#If this will be set to $true, this folder is in use by a container
 			#echo $id
-			if [ "$folder" == "$id" ] ||  [ "$folder" == "old" ]
+			if [ "$folder" == "$id" ] ||  [ "$folder" == "old" ] ||  [ "$folder" == "archive" ]
 			then
 				#mv "./ready-at-dawn-echo-arena/logs/$folder" "./ready-at-dawn-echo-arena/logs/old"
 				folderNeeded=1
