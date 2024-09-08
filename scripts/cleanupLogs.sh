@@ -8,11 +8,13 @@
 
 
 # CONSTANTS
+search_dir="/ready-at-dawn-echo-arena/logs/old"
+new_dir_root="/ready-at-dawn-echo-arena/logs/"
 archive_dir=archive
 old_dir_name=old
 
 # Loop "old" directories
-for old_dir in $(find /ready-at-dawn-echo-arena/logs/old -type d | grep "${old_dir_name}" | grep -v "${archive_dir}" | sort -r); do
+for old_dir in $(find ${search_dir} -type d | grep "${old_dir_name}" | grep -v "${archive_dir}" | sort -r); do
 
     # Get container from parent directory
     #   Example: "./old/12345
@@ -57,7 +59,7 @@ for old_dir in $(find /ready-at-dawn-echo-arena/logs/old -type d | grep "${old_d
         new_filename="${year}-${month}-${day}_${hour}-${minute}-${second}_${log_ver}_${log_mode}_${container_id}_${process_id}__${ip_address}_${port}.log"
 
         # Move file
-        new_dir=/ready-at-dawn-echo-arena/logs/${archive_dir}/${year}/${year}-${month}
+        new_dir=${new_dir_root}/${archive_dir}/${year}/${year}-${month}
         new_path=${new_dir}/${new_filename}
         echo "$old_filename: $old_path --> $new_path"
         mkdir -p "${new_dir}"
