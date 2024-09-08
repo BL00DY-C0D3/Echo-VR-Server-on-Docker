@@ -33,35 +33,36 @@ a=$startport
 	done
 }
 
-#this functions moves every old logfolder into ./old
-function moveOldLogs {
-	#create the "old" directory 
-    mkdir $logfolder/old 2> /dev/null
-	readarray -t container_ids < <(docker ps --format '{{.ID}}')
-	readarray -t folders < <(find $logfolder/ -mindepth 1 -maxdepth 1  -type d -not -path "*/.*" )
-
-	for folder in "${folders[@]}"
-	do
-		folderNeeded=0
-		folder=$( echo $folder |cut -d "/" -f 4 )
-		for id in ${container_ids[@]}
-		do
-			#If this will be set to $true, this folder is in use by a container
-			#echo $id
-			if [ "$folder" == "$id" ] ||  [ "$folder" == "old" ] ||  [ "$folder" == "archive" ]
-			then
-				#mv "./ready-at-dawn-echo-arena/logs/$folder" "./ready-at-dawn-echo-arena/logs/old"
-				folderNeeded=1
-			fi
-		done
-			if [ $folderNeeded -eq 0 ]
-			then
-				mv $logfolder/$folder $logfolder/old/$folder 2> /dev/null
-			fi
-	done
-
-	
-}
+		#this functions moves every old logfolder into ./old
+		function moveOldLogs {
+			#create the "old" directory 
+			mkdir $logfolder/old 2> /dev/null
+			readarray -t container_ids < <(docker ps --format '{{.ID}}')
+			readarray -t folders < <(find $logfolder/ -mindepth 1 -maxdepth 1  -type d -not -path "*/.*" )
+		
+			for folder in "${folders[@]}"
+			do
+				folderNeeded=0
+				#folder=$( echo $folder |cut -d "/" -f 4 )
+				
+				for id in ${container_ids[@]}
+				do
+					#If this will be set to $true, this folder is in use by a container
+					#echo $id
+					if [[ "$folder" =~ .*"$id" ]] ||  [[ "$folder" =~ .*"old" ]] ||  [[ "$folder" =~ .*"archive" ]]
+					then
+						#mv "./ready-at-dawn-echo-arena/logs/$folder" "./ready-at-dawn-echo-arena/logs/old"
+						folderNeeded=1						
+					fi
+				done
+					if [ $folderNeeded -eq 0 ]
+					then
+						mv $logfolder/$folder $logfolder/old/$folder 2> /dev/null
+					fi
+			done
+		
+			
+		}
 
 moveOldLogs
 check_port_to_use
