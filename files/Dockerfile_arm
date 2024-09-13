@@ -43,6 +43,11 @@ ARG src="./files/demoprofile.json"
 ARG target="/root/.wine/drive_c/users/root/Local Settings/Application Data/rad/echovr/users/dmo/demoprofile.json"
 COPY ${src} ${target}
 
+ARG src="./files/settings_mp_v2.json"
+ARG target="/root/.wine/drive_c/users/root/AppData/Local/rad/loneecho/settings_mp_v2.json"
+COPY ${src} ${target}
+
+
 #SET Debug-Level, Term and ENTRYPOINT
 ENV WINEDEBUG=-all
 ENV TERM=xterm
