@@ -16,7 +16,11 @@ timeToWaitBeforeRestart=30
 function checkForRunningInstance {
     if ! [[ $(pgrep -f echovr.exe ) ]]
     then
-        bash /scripts/start-echo.sh 
+        bash /scripts/start-echo.sh &
+        pkill -f "evragent"
+        sleep 3
+        cd /ready-at-dawn-echo-arena/replays/
+        /ready-at-dawn-echo-arena/replays/evragent -log $(date +"%Y-%m-%d_%H-%M-%S").log localhost:6721 & 
     fi
 }
 
